@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب</title>
+    <style>
+        /* التنسيق العام للصفحة */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background-color: #f2f2f2;
+        }
+        
+        /* شريط العلوي والسفلي */
+        .top-bar, .bottom-bar {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .top-bar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        /* تنسيق المستطيل الذي يحتوي على النموذج */
+        .container {
+            width: 320px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* تنسيق الحقول */
+        .container input[type="text"], .container input[type="email"], .container input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        /* تنسيق الزر */
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط علوي -->
+    <div class="top-bar">
+        شريط علوي
+    </div>
+
+    <!-- محتوى الصفحة -->
+    <div class="container">
+        <h1>إنشاء حساب</h1>
+        <form id="accountForm">
+            <input type="text" id="fullName" placeholder="الإسم الكامل" required><br>
+            <input type="email" id="email" placeholder="عنوان بريد إلكتروني" required><br>
+            <input type="password" id="password" placeholder="كلمة المرور" required><br>
+            <button type="button" onclick="saveData()">إنشاء</button>
+        </form>
+    </div>
+
+    <!-- شريط سفلي -->
+    <div class="bottom-bar">
+        شريط سفلي
+    </div>
+
+    <script>
+        // الدالة لحفظ البيانات (سيتم إرسالها إلى backend)
+        function saveData() {
+            // الحصول على القيم المدخلة
+            var fullName = document.getElementById("fullName").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // صياغة البيانات بشكل JSON
+            var data = {
+                fullName: fullName,
+                email: email,
+                password: password
+            };
+
+            // إرسال البيانات إلى السيرفر
+            fetch('http://localhost:3000/save-account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("تم حفظ البيانات بنجاح!");
+            })
+            .catch(error => {
+                alert("حدث خطأ أثناء حفظ البيانات");
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+  </html>
